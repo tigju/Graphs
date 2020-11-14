@@ -245,8 +245,9 @@ if __name__ == '__main__':
         1, 2, 4, 3, 7, 6, 5
         1, 2, 4, 3, 7, 5, 6
     '''
-    # graph.bft(1)
-
+    print("bft")
+    graph.bft(1)
+    print("------------------------")
     '''
     Valid DFT paths:
         1, 2, 3, 5, 4, 6, 7
@@ -254,19 +255,25 @@ if __name__ == '__main__':
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     '''
-    # graph.dft(1)
-    # graph.dft_recursive(1)
-
+    print("dft")
+    graph.dft(1)
+    print("dft recursive")
+    graph.dft_recursive(1)
+    print("------------------------")
     '''
     Valid BFS path:
         [1, 2, 4, 6]
     '''
-    # print(graph.bfs(1, 6))
-
+    print("bfs")
+    print(graph.bfs(1, 6))
+    print("------------------------")
     '''
     Valid DFS paths:
         [1, 2, 4, 6]
         [1, 2, 4, 7, 6]
     '''
-    # print(graph.dfs(1, 6))
+    print("dfs")
+    print(graph.dfs(1, 6))
+    print("dfs recursive")
     print(graph.dfs_recursive(1, 6))
+    print("------------------------")
