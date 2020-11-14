@@ -10,7 +10,10 @@ class Graph:
     def __init__(self):
         # vertex_id --> set of neighbors 
         self.vertices = {}
-        self.dft_set = set()
+        self.stack = deque()
+        self.queue = deque()
+        self.visited = set()
+
 
     def __repr__(self):
         return str (self.vertices)
@@ -105,9 +108,20 @@ class Graph:
 
         This should be done using recursion.
         """
-        pass
-            
+        visited = set()
+        return self.dft_recursive_helper(starting_vertex, visited)
 
+            
+    def dft_recursive_helper(self, curr_vertex, visited):
+        """
+        recurrsion helper for depth-first traversal, in order to reference visited set
+        """
+        visited.add(curr_vertex)
+        print(curr_vertex)
+        for neighbor in self.vertices[curr_vertex]:
+            if neighbor not in visited:
+                # recursive call
+                self.dft_recursive_helper(neighbor, visited)
 
     def bfs(self, starting_vertex, destination_vertex):
         """
