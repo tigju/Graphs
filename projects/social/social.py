@@ -1,6 +1,6 @@
 import random
 import math
-
+from collections import deque
 class User:
     def __init__(self, name):
         self.name = name
@@ -73,7 +73,23 @@ class SocialGraph:
         The key is the friend's ID and the value is the path.
         """
         visited = {}  # Note that this is a dictionary, not a set
-        # !!!! IMPLEMENT ME
+        queue = deque()
+
+        queue.append([user_id])
+        while len(queue) > 0:
+            curPath = queue.popleft()
+            # the current node you're on is the last nodein the path
+            curUser = curPath[-1]
+            
+            if curUser not in visited:
+                # add current path to user
+                visited[curUser] = curPath
+            
+                for neighbor in self.friendships[curUser]:
+                    newPath = list(curPath)  # make a copy of the current path
+                    newPath.append(neighbor)
+                    queue.append(newPath)
+
         return visited
 
 
