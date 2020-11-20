@@ -97,5 +97,11 @@ if __name__ == '__main__':
     sg = SocialGraph()
     sg.populate_graph(10, 2)
     print(sg.friendships)
-    connections = sg.get_all_social_paths(1)
-    print(connections)
+
+    connections1 = sg.get_all_social_paths(1)
+    print("Connections and their paths from 1")
+    print(connections1)
+
+    connections5 = sg.get_all_social_paths(5)
+    print("Connections and their paths from 5")
+    print(connections5)
