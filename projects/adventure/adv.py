@@ -12,10 +12,10 @@ world = World()
 
 # You may uncomment the smaller graphs for development and testing purposes.
 # map_file = "maps/test_line.txt"
-map_file = "maps/test_cross.txt"
+# map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
 # map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -30,11 +30,10 @@ player = Player(world.starting_room)
 # traversal_path = ['n', 'n']
 traversal_path = []
 
-steps = []
 # get the map adjecency list
 map_traversal = {}
 
-# get the rooms ' ids player will go through
+# get the rooms' ids player will go through
 rooms_path = []
 
 # helper method to reverse directions
@@ -89,17 +88,16 @@ def breadth_first(curr_room):
                 [rooms_path.append(p.id) for p in path[1:]]
 
                 return path[1:]
-
+            # add to visited
             visited.add(room)
 
-            for next_room in map_traversal[room.id].keys():
-                traversal_path.append(steps + [next_room])
-            
+            # go through the remaining exits and append to queue
             for n in room.get_exits():
                 queue.append(path + [room.get_room_in_direction(n)])
 
 # depth first traversal visits all exits with unexplored rooms until reaches dead end
 def depth_first(player_in_current_room):
+    
     stack = deque()
     stack.append(player_in_current_room)
 
@@ -108,7 +106,7 @@ def depth_first(player_in_current_room):
         curRoom = stack.pop()
         # add the room id in rooms_path
         rooms_path.append(curRoom.id)
-
+        
         # if curRoom is not None:
         # check if current room not in map_traversal, if not we add room 
         if curRoom.id not in map_traversal:
@@ -143,38 +141,38 @@ def depth_first(player_in_current_room):
                         add_exits(curRoom, curRoom.get_room_in_direction(ran), ran)
                         # add the next room to stack
                         stack.append(curRoom.get_room_in_direction(ran))
+    
+def get_directions():
+    # apply depth first and create our map_traversal and rooms_path
+    depth_first(player.current_room)
+    # go through map_traversal and return directions by the rooms id's from the rooms_path
+    for i in range(len(rooms_path)-1):
+        for key, val in map_traversal[rooms_path[i]].items():
+            if rooms_path[i+1] == val:
+                traversal_path.append(key)
 
+# main function call to get directions
+get_directions()
 
-depth_first(player.current_room)
-
-def get_key(val):
-    for key, value in map_traversal[val].items():
-        print("key", key)
-        print("value", value)
-
-for i in rooms_path:
-    print
-    traversal_path.append(get_key(i))
-
-print(map_traversal)                  
-# print(steps)
-print(rooms_path)
+# print(map_traversal)                  
+# print(rooms_path)
+# print(len(rooms_path))
 print(traversal_path)
 
 # TRAVERSAL TEST
-# visited_rooms = set()
-# player.current_room = world.starting_room
-# visited_rooms.add(player.current_room)
+visited_rooms = set()
+player.current_room = world.starting_room
+visited_rooms.add(player.current_room)
 
-# for move in traversal_path:
-#     player.travel(move)
-#     visited_rooms.add(player.current_room)
+for move in traversal_path:
+    player.travel(move)
+    visited_rooms.add(player.current_room)
 
-# if len(visited_rooms) == len(room_graph):
-#     print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
-# else:
-#     print("TESTS FAILED: INCOMPLETE TRAVERSAL")
-#     print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
+if len(visited_rooms) == len(room_graph):
+    print(f"TESTS PASSED: {len(traversal_path)} moves, {len(visited_rooms)} rooms visited")
+else:
+    print("TESTS FAILED: INCOMPLETE TRAVERSAL")
+    print(f"{len(room_graph) - len(visited_rooms)} unvisited rooms")
 
 # for room in visited_rooms:
 #     print(room.id)
